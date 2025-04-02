@@ -88,15 +88,16 @@ class BaseTTS:
     
 
 ###########################################################################################
+
 class EdgeTTS(BaseTTS):
     def txt_to_audio(self,msg):
-        voicename = "gu-IN-NiranjanNeural"
+        voicename = "hi-IN-SwaraNeural"
         text,textevent = msg
         t = time.time()
         asyncio.new_event_loop().run_until_complete(self.__main(voicename,text))
-        logger.info(f'-------edge tts time:{time.time()-t:.4f}s')
-        if self.input_stream.getbuffer().nbytes<=0: #edgetts err
-            logger.error('edgetts err!!!!!')
+        logger.info(f'-------edge_tts_time:{time.time()-t:.4f}s')
+        if self.input_stream.getbuffer().nbytes<=0: 
+            logger.error('edgetts err!!!!')
             return
         
         self.input_stream.seek(0)
