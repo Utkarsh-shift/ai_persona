@@ -1,19 +1,4 @@
-###############################################################################
-#  Copyright (C) 2024 LiveTalking@lipku https://github.com/lipku/LiveTalking
-#  email: lipku@foxmail.com
-# 
-#  Licensed under the Apache License, Version 2.0 (the "License");
-#  you may not use this file except in compliance with the License.
-#  You may obtain a copy of the License at
-#  
-#       http://www.apache.org/licenses/LICENSE-2.0
-# 
-#  Unless required by applicable law or agreed to in writing, software
-#  distributed under the License is distributed on an "AS IS" BASIS,
-#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#  See the License for the specific language governing permissions and
-#  limitations under the License.
-###############################################################################
+
 
 import math
 import torch
@@ -256,15 +241,15 @@ class LightReal(BaseReal):
                 res_frame,idx,audio_frames = self.res_frame_queue.get(block=True, timeout=1)
             except queue.Empty:
                 continue
-            if audio_frames[0][1]!=0 and audio_frames[1][1]!=0: #全为静音数据，只需要取fullimg
+            if audio_frames[0][1]!=0 and audio_frames[1][1]!=0: 
                 self.speaking = False
                 audiotype = audio_frames[0][1]
-                if self.custom_index.get(audiotype) is not None: #有自定义视频
+                if self.custom_index.get(audiotype) is not None: 
                     mirindex = self.mirror_index(len(self.custom_img_cycle[audiotype]),self.custom_index[audiotype])
                     combine_frame = self.custom_img_cycle[audiotype][mirindex]
                     self.custom_index[audiotype] += 1
                     # if not self.custom_opt[audiotype].loop and self.custom_index[audiotype]>=len(self.custom_img_cycle[audiotype]):
-                    #     self.curr_state = 1  #当前视频不循环播放，切换到静音状态
+                    #     self.curr_state = 1 
                 else:
                     combine_frame = self.frame_list_cycle[idx]
                     #combine_frame = self.imagecache.get_img(idx)

@@ -35,9 +35,6 @@ hparams = HParams(
 	rescale=True,  # Whether to rescale audio prior to preprocessing
 	rescaling_max=0.9,  # Rescaling value
 	
-	# Use LWS (https://github.com/Jonathan-LeRoux/lws) for STFT and phase reconstruction
-	# It"s preferred to set True to use with https://github.com/r9y9/wavenet_vocoder
-	# Does not work if n_ffit is not multiple of hop_size!!
 	use_lws=False,
 	
 	n_fft=800,  # Extra window size is filled with 0 paddings to match this parameter
@@ -72,8 +69,8 @@ hparams = HParams(
 	# test depending on dataset. Pitch info: male~[65, 260], female~[100, 525])
 	fmax=7600,  # To be increased/reduced depending on data.
 
-	###################### Our training parameters #################################
-	img_size=96,
+	
+	img_size=256,
 	fps=25,
 	
 	batch_size=16,

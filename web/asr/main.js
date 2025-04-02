@@ -431,7 +431,7 @@ function getJsonMessage( jsonMsg ) {
  
 }
 
-// 连接状态响应
+
 function getConnState( connState ) {
 	if ( connState === 0 ) { //on open
  
@@ -477,20 +477,14 @@ function record()
 }
 
  
-
-// 识别启动、停止、清空操作
 function start() {
 	
-	// 清除显示
+
 	clear();
-	//控件状态更新
  	console.log("isfilemode"+isfilemode);
-    
-	//启动连接
 	var ret=wsconnecter.wsStart();
-	// 1 is ok, 0 is error
 	if(ret==1){
-		info_div.innerHTML="正在连接asr服务器，请等待...";
+		info_div.innerHTML="asr...";
 		isRec = true;
 		btnStart.disabled = true;
 		btnStop.disabled = true;
@@ -529,10 +523,6 @@ function stop() {
  
 	  
 	
-	 
-
- 
-	// 控件状态更新
 	
 	isRec = false;
     info_div.innerHTML="发送完数据,请等候,正在识别...";

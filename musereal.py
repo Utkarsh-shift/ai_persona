@@ -1,19 +1,4 @@
-###############################################################################
-#  Copyright (C) 2024 LiveTalking@lipku https://github.com/lipku/LiveTalking
-#  email: lipku@foxmail.com
-# 
-#  Licensed under the Apache License, Version 2.0 (the "License");
-#  you may not use this file except in compliance with the License.
-#  You may obtain a copy of the License at
-#  
-#       http://www.apache.org/licenses/LICENSE-2.0
-# 
-#  Unless required by applicable law or agreed to in writing, software
-#  distributed under the License is distributed on an "AS IS" BASIS,
-#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#  See the License for the specific language governing permissions and
-#  limitations under the License.
-###############################################################################
+
 
 import math
 import torch
@@ -267,12 +252,12 @@ class MuseReal(BaseReal):
       
 
     def process_frames(self,quit_event,loop=None,audio_track=None,video_track=None):
-        # 新增状态跟踪变量
+        
         self.last_speaking = False
         self.transition_start = time.time()
-        self.transition_duration = 0.1  # 过渡时间
-        self.last_silent_frame = None  # 静音帧缓存
-        self.last_speaking_frame = None  # 说话帧缓存
+        self.transition_duration = 0.1  
+        self.last_silent_frame = None 
+        self.last_speaking_frame = None  
         
         while not quit_event.is_set():
             try:
@@ -280,7 +265,7 @@ class MuseReal(BaseReal):
             except queue.Empty:
                 continue
             
-            # 检测状态变化
+            
             current_speaking = not (audio_frames[0][1]!=0 and audio_frames[1][1]!=0)
             if current_speaking != self.last_speaking:
                 logger.info(f"状态切换：{'说话' if self.last_speaking else '静音'} → {'说话' if current_speaking else '静音'}")

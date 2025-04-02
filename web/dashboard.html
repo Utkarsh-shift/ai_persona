@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>livetalking数字人交互平台</title>
+    <title>Placecom</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <style>
@@ -281,7 +281,7 @@
     <div class="dashboard-container">
         <div class="row">
             <div class="col-12">
-                <h1 class="text-center mb-4">livetalking数字人交互平台</h1>
+                <h1 class="text-center mb-4">Placecom</h1>
             </div>
         </div>
 
@@ -369,7 +369,7 @@
                             <div class="tab-pane fade show active" id="chat" role="tabpanel" aria-labelledby="chat-tab">
                                 <div class="asr-container mb-3" id="chat-messages">
                                     <div class="asr-text system-message">
-                                        系统: 欢迎使用livetalking，请点击"开始连接"按钮开始对话。
+                                       Placecom
                                     </div>
                                 </div>
                                 
@@ -476,14 +476,14 @@
                 // 添加定时器检查视频流是否已加载
                 let connectionCheckTimer = setInterval(function() {
                     const video = document.getElementById('video');
-                    // 检查视频是否有数据
+                  
                     if (video.readyState >= 3 && video.videoWidth > 0) {
                         updateConnectionStatus('connected');
                         clearInterval(connectionCheckTimer);
                     }
-                }, 2000); // 每2秒检查一次
+                }, 2000); 
                 
-                // 60秒后如果还是连接中状态，就停止检查
+       
                 setTimeout(function() {
                     if (connectionCheckTimer) {
                         clearInterval(connectionCheckTimer);
@@ -498,7 +498,7 @@
                 updateConnectionStatus('disconnected');
             });
 
-            // 录制功能
+         
             $('#btn_start_record').click(function() {
                 console.log('Starting recording...');
                 fetch('/record', {

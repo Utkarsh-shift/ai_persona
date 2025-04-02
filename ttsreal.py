@@ -90,7 +90,7 @@ class BaseTTS:
 ###########################################################################################
 class EdgeTTS(BaseTTS):
     def txt_to_audio(self,msg):
-        voicename = "zh-CN-YunxiaNeural"
+        voicename = "gu-IN-NiranjanNeural"
         text,textevent = msg
         t = time.time()
         asyncio.new_event_loop().run_until_complete(self.__main(voicename,text))
@@ -527,7 +527,7 @@ class XTTS(BaseTTS):
             self.xtts(
                 text,
                 self.speaker,
-                "zh-cn", #en args.language,
+                "hi-IN", #en args.language,
                 self.opt.TTS_SERVER, #"http://localhost:9000", #args.server_url,
                 "20" #args.stream_chunk_size
             ),

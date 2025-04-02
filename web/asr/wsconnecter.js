@@ -1,10 +1,6 @@
-/**
- * Copyright FunASR (https://github.com/alibaba-damo-academy/FunASR). All Rights
- * Reserved. MIT License  (https://opensource.org/licenses/MIT)
- */
-/* 2021-2023 by zhaoming,mali aihealthx.com */
 
-function WebSocketConnectMethod( config ) { //定义socket连接方法类
+
+function WebSocketConnectMethod( config ) { 
 
 	
 	var speechSokt;
@@ -14,7 +10,7 @@ function WebSocketConnectMethod( config ) { //定义socket连接方法类
 	var stateHandle = config.stateHandle;
 			  
 	this.wsStart = function () {
-		var Uri = document.getElementById('wssip').value; //"wss://111.205.137.58:5821/wss/" //设置wss asr online接口地址 如 wss://X.X.X.X:port/wss/
+		var Uri = document.getElementById('wssip').value; 
 		if(Uri.match(/wss:\S*|ws:\S*/))
 		{
 			console.log("Uri"+Uri);
@@ -26,8 +22,8 @@ function WebSocketConnectMethod( config ) { //定义socket连接方法类
 		}
  
 		if ( 'WebSocket' in window ) {
-			speechSokt = new WebSocket( Uri ); // 定义socket连接对象
-			speechSokt.onopen = function(e){onOpen(e);}; // 定义响应函数
+			speechSokt = new WebSocket( Uri ); 
+			speechSokt.onopen = function(e){onOpen(e);}; 
 			speechSokt.onclose = function(e){
 			    console.log("onclose ws!");
 			    //speechSokt.close();
@@ -43,7 +39,7 @@ function WebSocketConnectMethod( config ) { //定义socket连接方法类
 		}
 	};
 	
-	// 定义停止与发送函数
+
 	this.wsStop = function () {
 		if(speechSokt != undefined) {
 			console.log("stop ws!");
@@ -54,7 +50,7 @@ function WebSocketConnectMethod( config ) { //定义socket连接方法类
 	this.wsSend = function ( oneData ) {
  
 		if(speechSokt == undefined) return;
-		if ( speechSokt.readyState === 1 ) { // 0:CONNECTING, 1:OPEN, 2:CLOSING, 3:CLOSED
+		if ( speechSokt.readyState === 1 ) { 
  
 			speechSokt.send( oneData );
  
@@ -62,10 +58,9 @@ function WebSocketConnectMethod( config ) { //定义socket连接方法类
 		}
 	};
 	
-	// SOCEKT连接中的消息与状态响应
+
 	function onOpen( e ) {
-		// 发送json
-		var chunk_size = new Array( 5, 10, 5 );
+		
 		var request = {
 			"chunk_size": chunk_size,
 			"wav_name":  "h5",

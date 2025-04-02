@@ -1,33 +1,7 @@
-###############################################################################
-#  Copyright (C) 2024 LiveTalking@lipku https://github.com/lipku/LiveTalking
-#  email: lipku@foxmail.com
-# 
-#  Licensed under the Apache License, Version 2.0 (the "License");
-#  you may not use this file except in compliance with the License.
-#  You may obtain a copy of the License at
-#  
-#       http://www.apache.org/licenses/LICENSE-2.0
-# 
-#  Unless required by applicable law or agreed to in writing, software
-#  distributed under the License is distributed on an "AS IS" BASIS,
-#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#  See the License for the specific language governing permissions and
-#  limitations under the License.
-###############################################################################
-
-# server.py
 from flask import Flask, render_template,send_from_directory,request, jsonify
 from flask_sockets import Sockets
-import base64
 import json
-#import gevent
-#from gevent import pywsgi
-#from geventwebsocket.handler import WebSocketHandler
-import re
-import numpy as np
 from threading import Thread,Event
-#import multiprocessing
-import torch.multiprocessing as mp
 
 from aiohttp import web
 import aiohttp
@@ -54,12 +28,9 @@ opt = None
 model = None
 avatar = None
         
-
-#####webrtc###############################
 pcs = set()
 
 def randN(N)->int:
-    '''生成长度为 N的随机数 '''
     min = pow(10, N - 1)
     max = pow(10, N)
     return random.randint(min, max - 1)
@@ -251,11 +222,9 @@ async def run(push_url,sessionid):
     await pc.setLocalDescription(await pc.createOffer())
     answer = await post(push_url,pc.localDescription.sdp)
     await pc.setRemoteDescription(RTCSessionDescription(sdp=answer,type='answer'))
-##########################################
-# os.environ['MKL_SERVICE_FORCE_INTEL'] = '1'
-# os.environ['MULTIPROCESSING_METHOD'] = 'forkserver'                                                    
+                                                  
 if __name__ == '__main__':
-    mp.set_start_method('spawn')
+    # mp.set_start_method('spawn')
     parser = argparse.ArgumentParser()
     parser.add_argument('--pose', type=str, default="data/data_kf.json", help="transforms.json, pose source")
     parser.add_argument('--au', type=str, default="data/au.csv", help="eye blink area")
@@ -473,7 +442,7 @@ if __name__ == '__main__':
     elif opt.transport=='rtcpush':
         pagename='rtcpushapi.html'
     logger.info('start http server; http://<serverip>:'+str(opt.listenport)+'/'+pagename)
-    logger.info('如果使用webrtc，推荐访问webrtc集成前端: http://<serverip>:'+str(opt.listenport)+'/dashboard.html')
+    
     def run_server(runner):
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
