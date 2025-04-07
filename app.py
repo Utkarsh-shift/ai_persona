@@ -337,12 +337,12 @@ if __name__ == '__main__':
     parser.add_argument('--fullbody_offset_y', type=int, default=0)
 
     #musetalk opt
-    parser.add_argument('--avatar_id', type=str, default='avator_1')
+    parser.add_argument('--avatar_id', type=str, default='wav2lip256_avatar1')
     parser.add_argument('--bbox_shift', type=int, default=5)
     parser.add_argument('--batch_size', type=int, default=16)
 
     # parser.add_argument('--customvideo', action='store_true', help="custom video")
-    # parser.add_argument('--customvideo_img', type=str, default='data/customvideo/img')
+    # parser.add_argument('--customvideo_img', type=str, default='data/customvideo/img')webrtcapi
     # parser.add_argument('--customvideo_imgnum', type=int, default=1)
 
     parser.add_argument('--customvideo_config', type=str, default='')
@@ -354,9 +354,9 @@ if __name__ == '__main__':
     # parser.add_argument('--CHARACTER', type=str, default='test')
     # parser.add_argument('--EMOTION', type=str, default='default')
 
-    parser.add_argument('--model', type=str, default='ernerf') #musetalk wav2lip
+    parser.add_argument('--model', type=str, default='wav2lip') #musetalk wav2lip
 
-    parser.add_argument('--transport', type=str, default='rtcpush') #rtmp webrtc rtcpush
+    parser.add_argument('--transport', type=str, default='webrtcapi') #rtmp webrtc rtcpush
     parser.add_argument('--push_url', type=str, default='http://localhost:1985/rtc/v1/whip/?app=live&stream=livestream') #rtmp://localhost/live/livestream
 
     parser.add_argument('--max_session', type=int, default=1)  #multi session count
