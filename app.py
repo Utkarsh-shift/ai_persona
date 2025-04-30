@@ -51,7 +51,6 @@ def build_nerfreal(sessionid:int)->BaseReal:
         nerfreal = LightReal(opt,model,avatar)
     return nerfreal
 
-#@app.route('/offer', methods=['POST'])
 async def offer(request):
     params = await request.json()
     offer = RTCSessionDescription(sdp=params["sdp"], type=params["type"])
@@ -59,7 +58,7 @@ async def offer(request):
     if len(nerfreals) >= opt.max_session:
         logger.info('reach max session')
         return -1
-    sessionid = randN(6) #len(nerfreals)
+    sessionid = randN(6) 
     logger.info('sessionid=%d',sessionid)
     nerfreals[sessionid] = None
     nerfreal = await asyncio.get_event_loop().run_in_executor(None, build_nerfreal,sessionid)
@@ -94,7 +93,6 @@ async def offer(request):
     answer = await pc.createAnswer()
     await pc.setLocalDescription(answer)
 
-    #return jsonify({"sdp": pc.localDescription.sdp, "type": pc.localDescription.type})
 
     return web.Response(
         content_type="application/json",
@@ -105,22 +103,30 @@ async def offer(request):
 
 async def human(request):
     params = await request.json()
+    sessionid = params.get('sessionid', 0)
 
-    sessionid = params.get('sessionid',0)
+    if sessionid not in nerfreals:
+        return web.Response(
+            status=400,
+            content_type="application/json",
+            text=json.dumps({"code": -1, "error": f"Session {sessionid} not found"}),
+        )
+
     if params.get('interrupt'):
         nerfreals[sessionid].flush_talk()
 
-    if params['type']=='echo':
+    if params['type'] == 'echo':
         nerfreals[sessionid].put_msg_txt(params['text'])
-    elif params['type']=='chat':
-        res=await asyncio.get_event_loop().run_in_executor(None, llm_response, params['text'],nerfreals[sessionid])                         
-        #nerfreals[sessionid].put_msg_txt(res)
+
+    elif params['type'] == 'chat':
+        res = await asyncio.get_event_loop().run_in_executor(
+            None, llm_response, params['text'], nerfreals[sessionid]
+        )
+      
 
     return web.Response(
         content_type="application/json",
-        text=json.dumps(
-            {"code": 0, "data":"ok"}
-        ),
+        text=json.dumps({"code": 0, "data": "ok"}),
     )
 
 async def humanaudio(request):
@@ -164,7 +170,7 @@ async def record(request):
 
     sessionid = params.get('sessionid',0)
     if params['type']=='start_record':
-        # nerfreals[sessionid].put_msg_txt(params['text'])
+      
         nerfreals[sessionid].start_recording()
     elif params['type']=='end_record':
         nerfreals[sessionid].stop_recording()
@@ -188,7 +194,7 @@ async def is_speaking(request):
 
 
 async def on_shutdown(app):
-    # close peer connections
+  
     coros = [pc.close() for pc in pcs]
     await asyncio.gather(*coros)
     pcs.clear()
@@ -224,7 +230,7 @@ async def run(push_url,sessionid):
     await pc.setRemoteDescription(RTCSessionDescription(sdp=answer,type='answer'))
                                                   
 if __name__ == '__main__':
-    # mp.set_start_method('spawn')
+  
     parser = argparse.ArgumentParser()
     parser.add_argument('--pose', type=str, default="data/data_kf.json", help="transforms.json, pose source")
     parser.add_argument('--au', type=str, default="data/au.csv", help="eye blink area")
@@ -316,10 +322,9 @@ if __name__ == '__main__':
     parser.add_argument('--asr_wav', type=str, default='', help="load the wav and use as input")
     parser.add_argument('--asr_play', action='store_true', help="play out the audio")
 
-    #parser.add_argument('--asr_model', type=str, default='deepspeech')
+  
     parser.add_argument('--asr_model', type=str, default='cpierse/wav2vec2-large-xlsr-53-esperanto') #
-    # parser.add_argument('--asr_model', type=str, default='facebook/wav2vec2-large-960h-lv60-self')
-    # parser.add_argument('--asr_model', type=str, default='facebook/hubert-large-ls960-ft')
+  
 
     parser.add_argument('--asr_save_feats', action='store_true')
     # audio FPS
@@ -359,7 +364,7 @@ if __name__ == '__main__':
     parser.add_argument('--transport', type=str, default='webrtcapi') #rtmp webrtc rtcpush
     parser.add_argument('--push_url', type=str, default='http://localhost:1985/rtc/v1/whip/?app=live&stream=livestream') #rtmp://localhost/live/livestream
 
-    parser.add_argument('--max_session', type=int, default=1)  #multi session count
+    parser.add_argument('--max_session', type=int, default=100)  #multi session count
     parser.add_argument('--listenport', type=int, default=8010)
 
     opt = parser.parse_args()

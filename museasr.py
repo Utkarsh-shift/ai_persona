@@ -27,12 +27,22 @@ class MuseASR(BaseASR):
         
         inputs = np.concatenate(self.frames) # [N * chunk]
         whisper_feature = self.audio_processor.audio2feat(inputs)
+
         # for feature in whisper_feature:
         #     self.audio_feats.append(feature)        
         #print(f"processing audio costs {(time.time() - start_time) * 1000}ms, inputs shape:{inputs.shape} whisper_feature len:{len(whisper_feature)}")
-        whisper_chunks = self.audio_processor.feature2chunks(feature_array=whisper_feature,fps=self.fps/2,batch_size=self.batch_size,start=self.stride_left_size/2 )
+
+
+        whisper_chunks = self.audio_processor.feature2chunks(
+                feature_array=whisper_feature,
+                fps=self.fps / 2,
+                audio_feat_length=[self.stride_left_size, self.stride_right_size]
+            )
+
+
         #print(f"whisper_chunks len:{len(whisper_chunks)},self.audio_feats len:{len(self.audio_feats)},self.output_queue len:{self.output_queue.qsize()}")
         #self.audio_feats = self.audio_feats[-(self.stride_left_size + self.stride_right_size):]
+
         self.feat_queue.put(whisper_chunks)
-        # discard the old part to save memory
+     
         self.frames = self.frames[-(self.stride_left_size + self.stride_right_size):]

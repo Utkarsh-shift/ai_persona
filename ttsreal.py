@@ -87,11 +87,12 @@ class BaseTTS:
         pass
     
 
-###########################################################################################
+#################################################################################
 
 class EdgeTTS(BaseTTS):
     def txt_to_audio(self,msg):
-        voicename = "gu-IN-DhwaniNeural"
+        # voicename = "hi-IN-SwaraNeural"
+        voicename = "zh-CN-YunjianNeural"
         text,textevent = msg
         t = time.time()
         asyncio.new_event_loop().run_until_complete(self.__main(voicename,text))
@@ -591,3 +592,7 @@ class XTTS(BaseTTS):
                     idx += self.chunk
         eventpoint={'status':'end','text':text,'msgenvent':textevent}
         self.parent.put_audio_frame(np.zeros(self.chunk,np.float32),eventpoint)  
+
+
+
+

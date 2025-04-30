@@ -216,7 +216,6 @@ def get_image_prepare_material(image, face_box, upper_boundary_ratio=0.5, expand
     body = Image.fromarray(image[:, :, ::-1])
 
     x, y, x1, y1 = face_box
-    # print(x1-x,y1-y)
     crop_box, s = get_crop_box(face_box, expand)
     x_s, y_s, x_e, y_e = crop_box
 
@@ -228,7 +227,7 @@ def get_image_prepare_material(image, face_box, upper_boundary_ratio=0.5, expand
     mask_image = Image.new('L', ori_shape, 0)
     mask_image.paste(mask_small, (x - x_s, y - y_s, x1 - x_s, y1 - y_s))
 
-    # keep upper_boundary_ratio of talking area
+    
     width, height = mask_image.size
     top_boundary = int(height * upper_boundary_ratio)
     modified_mask_image = Image.new('L', ori_shape, 0)
@@ -239,10 +238,9 @@ def get_image_prepare_material(image, face_box, upper_boundary_ratio=0.5, expand
     return mask_array, crop_box
 
 
-##todo 简单根据文件后缀判断  要更精确的可以自己修改 使用 magic
 def is_video_file(file_path):
-    video_exts = ['.mp4', '.mkv', '.flv', '.avi', '.mov']  # 这里列出了一些常见的视频文件扩展名，可以根据需要添加更多
-    file_ext = os.path.splitext(file_path)[1].lower()  # 获取文件扩展名并转换为小写
+    video_exts = ['.mp4', '.mkv', '.flv', '.avi', '.mov']  
+    file_ext = os.path.splitext(file_path)[1].lower()  
     return file_ext in video_exts
 
 
@@ -255,7 +253,7 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 
 
 def create_musetalk_human(file, avatar_id):
-    # 保存文件设置 可以不动
+   
     save_path = os.path.join(current_dir, f'../data/avatars/avator_{avatar_id}')
     save_full_path = os.path.join(current_dir, f'../data/avatars/avator_{avatar_id}/full_imgs')
     create_dir(save_path)
@@ -263,7 +261,7 @@ def create_musetalk_human(file, avatar_id):
     mask_out_path = os.path.join(current_dir, f'../data/avatars/avator_{avatar_id}/mask')
     create_dir(mask_out_path)
 
-    # 模型
+  
     mask_coords_path = os.path.join(current_dir, f'{save_path}/mask_coords.pkl')
     coords_path = os.path.join(current_dir, f'{save_path}/coords.pkl')
     latents_out_path = os.path.join(current_dir, f'{save_path}/latents.pt')
@@ -291,7 +289,7 @@ def create_musetalk_human(file, avatar_id):
     coord_list, frame_list = get_landmark_and_bbox(input_img_list, 5)
     input_latent_list = []
     idx = -1
-    # maker if the bbox is not sufficient
+    
     coord_placeholder = (0.0, 0.0, 0.0, 0.0)
     for bbox, frame in zip(coord_list, frame_list):
         idx = idx + 1
@@ -335,7 +333,7 @@ vae.to(device)
 fp = FaceParsing(os.path.abspath(os.path.join(current_dir, '../models/face-parse-bisent/resnet18-5c106cde.pth')),
                  os.path.abspath(os.path.join(current_dir, '../models/face-parse-bisent/79999_iter.pth')))
 if __name__ == '__main__':
-    # 视频文件地址
+
     parser = argparse.ArgumentParser()
     parser.add_argument("--file",
                         type=str,

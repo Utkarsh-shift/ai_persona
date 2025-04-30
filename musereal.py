@@ -3,6 +3,7 @@
 import math
 import torch
 import numpy as np
+from threading import Thread
 
 #from .utils import *
 import subprocess
@@ -15,15 +16,15 @@ import pickle
 import copy
 
 import queue
-from queue import Queue
-from threading import Thread, Event
+
+
 import torch.multiprocessing as mp
 
-from musetalk.utils.utils import get_file_type,get_video_fps,datagen
-#from musetalk.utils.preprocessing import get_landmark_and_bbox,read_imgs,coord_placeholder
-from musetalk.utils.blending import get_image,get_image_prepare_material,get_image_blending
-from musetalk.utils.utils import load_all_model,load_diffusion_model,load_audio_model
-from musetalk.whisper.audio2feature import Audio2Feature
+
+
+from musetalk.utils.blending import get_image_blending
+from musetalk.utils.utils import load_all_model
+
 
 from museasr import MuseASR
 import asyncio
@@ -34,15 +35,15 @@ from tqdm import tqdm
 from logger import logger
 
 def load_model():
-    # load model weights
+
     audio_processor,vae, unet, pe = load_all_model()
     device = torch.device("cuda" if torch.cuda.is_available() else ("mps" if (hasattr(torch.backends, "mps") and torch.backends.mps.is_available()) else "cpu"))
     timesteps = torch.tensor([0], device=device)
     pe = pe.half()
     vae.vae = vae.vae.half()
-    #vae.vae.share_memory()
+
     unet.model = unet.model.half()
-    #unet.model.share_memory()
+
     return vae, unet, pe, timesteps, audio_processor
 
 def load_avatar(avatar_id):
@@ -66,6 +67,8 @@ def load_avatar(avatar_id):
     with open(coords_path, 'rb') as f:
         coord_list_cycle = pickle.load(f)
     input_img_list = glob.glob(os.path.join(full_imgs_path, '*.[jpJP][pnPN]*[gG]'))
+
+
     input_img_list = sorted(input_img_list, key=lambda x: int(os.path.splitext(os.path.basename(x))[0]))
     frame_list_cycle = read_imgs(input_img_list)
     with open(mask_coords_path, 'rb') as f:

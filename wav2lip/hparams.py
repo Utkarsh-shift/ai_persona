@@ -70,7 +70,7 @@ hparams = HParams(
 	fmax=7600,  # To be increased/reduced depending on data.
 
 	
-	img_size=256,
+	img_size=256,      #512
 	fps=25,
 	
 	batch_size=16,
