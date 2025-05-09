@@ -80,7 +80,6 @@ def load_avatar(avatar_id):
 
 @torch.no_grad()
 def warm_up(batch_size,model):
-    # 预热函数
     logger.info('warmup model...')
     vae, unet, pe, timesteps, audio_processor = model
     #batch_size = 16

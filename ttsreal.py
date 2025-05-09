@@ -92,7 +92,7 @@ class BaseTTS:
 class EdgeTTS(BaseTTS):
     def txt_to_audio(self,msg):
         # voicename = "hi-IN-SwaraNeural"
-        voicename = "zh-CN-YunjianNeural"
+        voicename = "en-IN-PrabhatNeural"
         text,textevent = msg
         t = time.time()
         asyncio.new_event_loop().run_until_complete(self.__main(voicename,text))
@@ -137,7 +137,7 @@ class EdgeTTS(BaseTTS):
     
     async def __main(self,voicename: str, text: str):
         try:
-            communicate = edge_tts.Communicate(text, voicename)
+            communicate = edge_tts.Communicate(text, voicename, rate="+35%")
 
             #with open(OUTPUT_FILE, "wb") as file:
             first = True
